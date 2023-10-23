@@ -82,3 +82,15 @@ RUN pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini
+
+# Installation de Drupal
+RUN composer create-project drupal/recommended-project drupal10
+
+# Additional setup for your Drupal project
+WORKDIR /var/www/html/drupal10/web
+
+RUN mkdir -p sites/default/files \
+    && chmod -R a+rw sites/default/files \
+    && chmod a+rw sites/default \
+    && cp sites/default/default.settings.php sites/default/settings.php \
+    && chmod a+rw sites/default/settings.php
